@@ -3,119 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astral System - Chef Mauricio Marín</title>
+    <title>Astral System | Chef Mauricio Marín</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .gradient-brand { background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%); }
         .hidden { display: none; }
+        .card-stats { border-left: 4px solid #2563eb; }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-100 font-sans antialiased">
 
-    <header class="p-6 bg-white shadow-sm flex justify-between items-center">
-        <h1 class="text-xl font-bold text-blue-800">CHEF MAURICIO MARÍN <span class="text-gray-400">| Consultoría</span></h1>
-        <div class="text-xs text-right font-semibold text-gray-500 uppercase tracking-widest">
-            VIBRAS POSITIVAS HM
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
+        <div>
+            <span class="text-blue-800 font-bold text-lg uppercase">Chef Mauricio Marín</span>
+            <p class="text-xs text-gray-400 leading-tight">CONSULTORÍA GASTRONÓMICA</p>
         </div>
-    </header>
+        <div class="flex gap-4">
+            <button onclick="showSection('view-client')" class="text-sm font-medium text-gray-600 hover:text-blue-600">Vista Cliente</button>
+            <button onclick="showSection('view-admin')" class="text-sm font-medium text-gray-600 hover:text-blue-600 font-bold">📊 Dashboard Chef</button>
+        </div>
+    </nav>
 
-    <main class="max-w-4xl mx-auto p-4 mt-6">
-        
-        <section id="view-register" class="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div class="gradient-brand p-8 text-white text-center">
-                <h2 class="text-3xl font-bold italic">¡Tu opinión vale postre!</h2>
-                <p class="mt-2 opacity-90">Regístrate y recibe un beneficio exclusivo en tu próxima visita.</p>
-            </div>
-            <form id="form-cliente" class="p-8 space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Nombre Completo</label>
-                    <input type="text" id="nombre" required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+    <main class="max-w-4xl mx-auto p-4 md:p-8">
+
+        <section id="view-client" class="space-y-6">
+            <div id="register-card" class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+                <div class="gradient-brand p-10 text-white text-center">
+                    <h2 class="text-4xl font-extrabold tracking-tight">¡Tu opinión vale postre!</h2>
+                    <p class="mt-3 text-blue-100 text-lg">Regístrate ahora y recibe un beneficio exclusivo en esta visita.</p>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                
+                <form id="form-cliente" class="p-8 space-y-5">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">WhatsApp</label>
-                        <input type="tel" id="whatsapp" placeholder="300..." required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label class="block text-sm font-semibold text-gray-700">Nombre Completo</label>
+                        <input type="text" id="nombre" required class="w-full mt-1 p-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none transition">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Cumpleaños</label>
-                        <input type="date" id="fecha" required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700">WhatsApp</label>
+                            <input type="tel" id="whatsapp" placeholder="300 123 4567" required class="w-full mt-1 p-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700">Tu Cumpleaños</label>
+                            <input type="date" id="fecha" required class="w-full mt-1 p-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="w-full gradient-brand text-white font-bold py-4 rounded-xl hover:opacity-90 transition">OBTENER MI REGALO</button>
-            </form>
-        </section>
-
-        <section id="view-feedback" class="hidden bg-white rounded-2xl shadow-xl p-8 text-center">
-            <h2 class="text-2xl font-bold text-gray-800">¿Cómo fue tu experiencia hoy?</h2>
-            <div class="flex justify-center gap-6 my-8">
-                <button onclick="handleFeedback('bueno')" class="text-5xl hover:scale-110 transition">🤩</button>
-                <button onclick="handleFeedback('malo')" class="text-5xl hover:scale-110 transition">😕</button>
+                    <button type="submit" class="w-full gradient-brand text-white font-black py-5 rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all text-xl">OBTENER MI REGALO</button>
+                </form>
             </div>
-            <p class="text-gray-500 italic">Tu honestidad ayuda al Chef a mejorar el servicio.</p>
+
+            <div id="feedback-card" class="hidden bg-white rounded-3xl shadow-2xl p-10 text-center animate-fade-in">
+                <h2 class="text-3xl font-bold text-gray-800">¿Cómo estuvo todo hoy?</h2>
+                <p class="text-gray-500 mt-2">Califica tu experiencia para activar tu cupón</p>
+                <div class="flex justify-center gap-8 my-10">
+                    <button onclick="handleFeedback('excelente')" class="text-6xl hover:scale-125 transition">🤩</button>
+                    <button onclick="handleFeedback('mejorable')" class="text-6xl hover:scale-125 transition">😕</button>
+                </div>
+            </div>
+
+            <div id="thanks-card" class="hidden bg-white rounded-3xl shadow-2xl p-10 text-center">
+                <div id="thanks-content"></div>
+                <button onclick="location.reload()" class="mt-8 text-blue-600 font-bold underline">Finalizar</button>
+            </div>
         </section>
 
-        <section id="view-thanks" class="hidden bg-white rounded-2xl shadow-xl p-8 text-center">
-            <div id="thanks-content"></div>
-            <button onclick="resetApp()" class="mt-6 text-blue-600 underline">Volver al inicio</button>
+        <section id="view-admin" class="hidden space-y-6">
+            <div class="flex justify-between items-end">
+                <h2 class="text-2xl font-black text-gray-800 uppercase italic">Métricas de Asesoría</h2>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">EN VIVO</span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-2xl shadow card-stats">
+                    <p class="text-gray-400 text-xs font-bold uppercase">Nuevos Fans</p>
+                    <p class="text-2xl font-black text-blue-900">1,248</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow card-stats">
+                    <p class="text-gray-400 text-xs font-bold uppercase">Retorno ROI</p>
+                    <p class="text-2xl font-black text-green-600">+24%</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow card-stats">
+                    <p class="text-gray-400 text-xs font-bold uppercase">Reseñas Google</p>
+                    <p class="text-2xl font-black text-yellow-500">142</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow card-stats">
+                    <p class="text-gray-400 text-xs font-bold uppercase">Quejas Privadas</p>
+                    <p class="text-2xl font-black text-red-500">3</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-xl">
+                <h3 class="font-bold text-gray-700 mb-4">Venta Atribuida al Sistema (Últimos 30 días)</h3>
+                <canvas id="roiChart" height="150"></canvas>
+            </div>
         </section>
 
-        <footer class="mt-12 text-center text-gray-400 text-xs pb-10">
-            &copy; 2026 Vibras Positivas. Todos los derechos reservados.<br>
-            Desarrollado para la Consultoría de Chef Mauricio Marín.
-        </footer>
     </main>
 
-    <script>
-        let clienteActual = {};
+    <footer class="mt-12 text-center text-gray-400 text-[10px] pb-10 tracking-widest uppercase">
+        © 2026 VIBRAS POSITIVAS HM | DERECHOS RESERVADOS <br>
+        TECNOLOGÍA DE ANCLA PARA CHEF MAURICIO MARÍN
+    </footer>
 
-        // Manejo de Registro
+    <script>
+        // Lógica de Navegación
+        function showSection(id) {
+            document.getElementById('view-client').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'view-admin') initChart();
+        }
+
+        // Registro de Cliente
         document.getElementById('form-cliente').addEventListener('submit', function(e) {
             e.preventDefault();
-            clienteActual = {
-                nombre: document.getElementById('nombre').value,
-                whatsapp: document.getElementById('whatsapp').value,
-                fecha: document.getElementById('fecha').value
-            };
-            
-            // Simular guardado en base de datos
-            console.log("Cliente registrado:", clienteActual);
-            
-            showView('view-feedback');
+            document.getElementById('register-card').classList.add('hidden');
+            document.getElementById('feedback-card').classList.remove('hidden');
         });
 
-        // Manejo de Feedback (El Corazón del Sistema Astral)
+        // El Filtro Astral (Protección de Reputación)
         function handleFeedback(tipo) {
-            const thanksContent = document.getElementById('thanks-content');
-            
-            if (tipo === 'bueno') {
-                thanksContent.innerHTML = `
-                    <div class="text-green-500 text-6xl mb-4">⭐</div>
-                    <h2 class="text-2xl font-bold">¡Nos alegra mucho!</h2>
-                    <p class="text-gray-600 mt-2">¿Podrías dejarnos una reseña en Google? Nos ayudaría mucho.</p>
-                    <a href="https://google.com/maps" target="_blank" class="inline-block mt-4 bg-yellow-400 text-black font-bold py-2 px-6 rounded-full">DEJAR RESEÑA EN GOOGLE</a>
+            document.getElementById('feedback-card').classList.add('hidden');
+            const thanksCard = document.getElementById('thanks-card');
+            const content = document.getElementById('thanks-content');
+            thanksCard.classList.remove('hidden');
+
+            if (tipo === 'excelente') {
+                content.innerHTML = `
+                    <div class="text-yellow-400 text-7xl mb-4">⭐</div>
+                    <h2 class="text-3xl font-black text-gray-800 uppercase">¡Eres el mejor!</h2>
+                    <p class="text-gray-600 text-lg mt-2">Como te encantó la experiencia, ¿nos regalas 5 estrellas en Google?</p>
+                    <a href="https://search.google.com/local/writereview?placeid=TU_PLACE_ID" target="_blank" class="inline-block mt-6 bg-yellow-400 text-black font-black py-4 px-10 rounded-2xl shadow-xl">ESCRIBIR RESEÑA EN GOOGLE</a>
                 `;
             } else {
-                thanksContent.innerHTML = `
-                    <div class="text-red-400 text-6xl mb-4">✍️</div>
-                    <h2 class="text-2xl font-bold">Lamentamos oír eso</h2>
-                    <p class="text-gray-600 mt-2">Por favor, cuéntanos qué pasó para que el Chef Mauricio lo corrija personalmente.</p>
-                    <textarea class="w-full mt-4 p-3 border rounded-lg" placeholder="Escribe aquí tus comentarios..."></textarea>
-                    <button onclick="alert('Gracias, el Chef revisará esto')" class="mt-4 bg-gray-800 text-white py-2 px-6 rounded-full">ENVIAR AL CHEF</button>
+                content.innerHTML = `
+                    <div class="text-blue-500 text-7xl mb-4">✉️</div>
+                    <h2 class="text-3xl font-black text-gray-800 uppercase">Queremos mejorar</h2>
+                    <p class="text-gray-600 text-lg mt-2">Lamentamos que no fuera perfecto. Tu comentario llegará directo al <b>Chef Mauricio Marín</b> para corregirlo.</p>
+                    <textarea class="w-full mt-4 p-4 border-2 border-gray-100 rounded-2xl bg-gray-50" placeholder="¿Qué podemos hacer mejor?"></textarea>
+                    <button onclick="alert('Enviado al Chef. ¡Gracias!')" class="mt-4 bg-gray-900 text-white font-bold py-3 px-8 rounded-xl">ENVIAR FEEDBACK PRIVADO</button>
                 `;
             }
-            showView('view-thanks');
         }
 
-        function showView(id) {
-            document.getElementById('view-register').classList.add('hidden');
-            document.getElementById('view-feedback').classList.add('hidden');
-            document.getElementById('view-thanks').classList.add('hidden');
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function resetApp() {
-            document.getElementById('form-cliente').reset();
-            showView('view-register');
+        // Gráfico de ROI para el Dashboard
+        function initChart() {
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                    datasets: [{
+                        label: 'Ventas por Sistema ($)',
+                        data: [5000, 8500, 12000, 18500],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { plugins: { legend: { display: false } } }
+            });
         }
     </script>
 </body>
