@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astral System - Chef Mauricio Marín</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-brand { background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%); }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <header class="p-6 bg-white shadow-sm flex justify-between items-center">
+        <h1 class="text-xl font-bold text-blue-800">CHEF MAURICIO MARÍN <span class="text-gray-400">| Consultoría</span></h1>
+        <div class="text-xs text-right font-semibold text-gray-500 uppercase tracking-widest">
+            VIBRAS POSITIVAS HM
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 mt-6">
+        
+        <section id="view-register" class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="gradient-brand p-8 text-white text-center">
+                <h2 class="text-3xl font-bold italic">¡Tu opinión vale postre!</h2>
+                <p class="mt-2 opacity-90">Regístrate y recibe un beneficio exclusivo en tu próxima visita.</p>
+            </div>
+            <form id="form-cliente" class="p-8 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nombre Completo</label>
+                    <input type="text" id="nombre" required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">WhatsApp</label>
+                        <input type="tel" id="whatsapp" placeholder="300..." required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Cumpleaños</label>
+                        <input type="date" id="fecha" required class="w-full mt-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+                <button type="submit" class="w-full gradient-brand text-white font-bold py-4 rounded-xl hover:opacity-90 transition">OBTENER MI REGALO</button>
+            </form>
+        </section>
+
+        <section id="view-feedback" class="hidden bg-white rounded-2xl shadow-xl p-8 text-center">
+            <h2 class="text-2xl font-bold text-gray-800">¿Cómo fue tu experiencia hoy?</h2>
+            <div class="flex justify-center gap-6 my-8">
+                <button onclick="handleFeedback('bueno')" class="text-5xl hover:scale-110 transition">🤩</button>
+                <button onclick="handleFeedback('malo')" class="text-5xl hover:scale-110 transition">😕</button>
+            </div>
+            <p class="text-gray-500 italic">Tu honestidad ayuda al Chef a mejorar el servicio.</p>
+        </section>
+
+        <section id="view-thanks" class="hidden bg-white rounded-2xl shadow-xl p-8 text-center">
+            <div id="thanks-content"></div>
+            <button onclick="resetApp()" class="mt-6 text-blue-600 underline">Volver al inicio</button>
+        </section>
+
+        <footer class="mt-12 text-center text-gray-400 text-xs pb-10">
+            &copy; 2026 Vibras Positivas. Todos los derechos reservados.<br>
+            Desarrollado para la Consultoría de Chef Mauricio Marín.
+        </footer>
+    </main>
+
+    <script>
+        let clienteActual = {};
+
+        // Manejo de Registro
+        document.getElementById('form-cliente').addEventListener('submit', function(e) {
+            e.preventDefault();
+            clienteActual = {
+                nombre: document.getElementById('nombre').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                fecha: document.getElementById('fecha').value
+            };
+            
+            // Simular guardado en base de datos
+            console.log("Cliente registrado:", clienteActual);
+            
+            showView('view-feedback');
+        });
+
+        // Manejo de Feedback (El Corazón del Sistema Astral)
+        function handleFeedback(tipo) {
+            const thanksContent = document.getElementById('thanks-content');
+            
+            if (tipo === 'bueno') {
+                thanksContent.innerHTML = `
+                    <div class="text-green-500 text-6xl mb-4">⭐</div>
+                    <h2 class="text-2xl font-bold">¡Nos alegra mucho!</h2>
+                    <p class="text-gray-600 mt-2">¿Podrías dejarnos una reseña en Google? Nos ayudaría mucho.</p>
+                    <a href="https://google.com/maps" target="_blank" class="inline-block mt-4 bg-yellow-400 text-black font-bold py-2 px-6 rounded-full">DEJAR RESEÑA EN GOOGLE</a>
+                `;
+            } else {
+                thanksContent.innerHTML = `
+                    <div class="text-red-400 text-6xl mb-4">✍️</div>
+                    <h2 class="text-2xl font-bold">Lamentamos oír eso</h2>
+                    <p class="text-gray-600 mt-2">Por favor, cuéntanos qué pasó para que el Chef Mauricio lo corrija personalmente.</p>
+                    <textarea class="w-full mt-4 p-3 border rounded-lg" placeholder="Escribe aquí tus comentarios..."></textarea>
+                    <button onclick="alert('Gracias, el Chef revisará esto')" class="mt-4 bg-gray-800 text-white py-2 px-6 rounded-full">ENVIAR AL CHEF</button>
+                `;
+            }
+            showView('view-thanks');
+        }
+
+        function showView(id) {
+            document.getElementById('view-register').classList.add('hidden');
+            document.getElementById('view-feedback').classList.add('hidden');
+            document.getElementById('view-thanks').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function resetApp() {
+            document.getElementById('form-cliente').reset();
+            showView('view-register');
+        }
+    </script>
+</body>
+</html>
